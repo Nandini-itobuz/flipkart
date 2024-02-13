@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="./style.css" rel="stylesheet">
+    
+</head>
+<body>
+    
+    <ul class="nav">
+        <li class="nav-logo"><a href="#"><img class="nav-img" src="images/logo.svg"></a></li>
+    </ul>
+
+
+    <div class="login-container">
+        <h2 class="login-heading">Welcome to Flipkart!</h2>
+        <form action="#" method="post" class="form-main" id="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required class="inputfeild">
+            <input type="email" name="email" placeholder="abc@gmail.com" required class="inputfeild">
+            <input type="number" name="oyp" placeholder="Enter otp" required class="inputfeild login-verify">
+            <input type="button" value="Get OTP" class="login-btn" onclick='sendOtp()'>
+            <input type="button" value="Verify" class="login-btn verify-btn" >
+        </form>
+    </div>
+
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+    <script>
+         function sendOtp(){
+    const email = document.getElementsByClassName("inputfeild");
+    console.log(email[1]);
+    console.log(email[2]);
+
+    let otpValue= Math.floor(Math.random()* 100000);
+    let emailBody = `<h2>Your OTP is </h2>${otpValue}`;
+    Email.send({
+        SecureToken : "866b863a-baa3-4b0c-b1fc-e15a24518420",
+        To : email[1].value,
+        From : "nandini@itobuz.com",
+        Subject : "Verify Email!",
+        Body : emailBody,
+    }).then(
+
+      message =>{
+        if(message === "OK"){
+            alert("OTP sent to your email "+ email[1].value);
+
+            email[2].style.display = "block";
+            const otpBtn = document.getElementsByClassName("verify-btn");
+            otpBtn[0].addEventListener("click", () =>{
+
+                if(email[2].value == otpValue){
+                    alert("Email Address Verified")
+                }
+                else{
+                    alert("invalid otp");
+                }
+            })
+
+        }
+      }
+    );
+ }
+
+    </script>
+</body>
+</html>

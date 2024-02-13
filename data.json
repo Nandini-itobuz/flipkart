@@ -1,0 +1,66 @@
+[
+    {
+        "id": "0",
+        "productName": "Huawei MateBook X Pro",
+        "image": "images\\huawei-matebook-pro.jpg",
+        "price": "1499",
+        "description": "This is a gorgeously-designed laptop with a stunning screen.",
+        "quantity": "0"
+    },
+    {
+        "id": "1",
+        "productName": "Apple Macbook Pro",
+        "image": "images\\macbook-pro-15.jpg",
+        "price": "9199",
+        "quantity": "0",
+        "description": "If you're after the latest and greatest laptop from Apple, this is it. "
+    },
+    {
+        "id": "2",
+        "productName": "Dell XPS 13",
+        "image": "images\\dell-xps-13.png",
+        "price": "2199",
+        "quantity": "0",
+        "description": "The Dell XPS 13 is an absolutely brilliant and stunning laptop."
+    },
+    {
+        "id": "3",
+        "productName": "Asus ZenBook Flip S",
+        "image": "images\\samsung-notebook-9.jpg",
+        "price": "5399",
+        "quantity": "0",
+        "description": "Asus has struck gold with its new Flip S 2-in-1 laptop.Best of lot."
+    },
+    {
+        "id": "4",
+        "productName": "Samsung Notebook 9",
+        "image": "images\\dell-xps-13.png",
+        "price": "9499",
+        "quantity": "0",
+        "description": " Samsung Notebook 9 is Packed with more horsepower than some MacBook Pros"
+    },
+    {
+        "id": "5",
+        "productName": "Huawei MateBook X Pro",
+        "image": "images\\huawei-matebook-pro.jpg",
+        "price": "8499",
+        "description": "The Huawei MateBook X Pro is our pick for the best laptop.",
+        "quantity": "0"
+    },
+    {
+        "id": "6",
+        "productName": "Apple Macbook Pro",
+        "image": "images\\macbook-pro-15.jpg",
+        "price": "3199",
+        "quantity": "0",
+        "description": "If you're after the latest and greatest laptop from Apple, this is it. "
+    },
+    {
+        "id": "7",
+        "productName": "Dell XPS 13",
+        "image": "images\\dell-xps-13.png",
+        "price": "9199",
+        "quantity": "0",
+        "description": " The 2018 version rocks an 8th-generation Intel Core i5 or i7 processor."
+    }
+]
