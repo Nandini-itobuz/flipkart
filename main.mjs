@@ -1,10 +1,11 @@
 import user from "./data.json" assert { type: 'json' };
+import filex from "./filex.json" assert {type : 'json'};
 import cartdata from "./cart.json" assert { type: 'json' };
-
 import { create } from "./cards.mjs";
 
 const x=JSON.stringify(user);
 const items=JSON.parse(x);
+
 
 function setList(key, data) {
     if (typeof localStorage !== "undefined") {
@@ -20,9 +21,40 @@ function updateListItems(key,data) {
     localStorage.setItem(key, JSON.stringify(data));
 }
 
+function productPagetheme() {
+  let white = "white";
+  let black = "#3e3e42";
+  document.body.style.backgroundColor = white;
+  let themeDiv = document.getElementsByClassName("theme");
+  let theme = document.getElementById("theme-img");
+
+  themeDiv[0].addEventListener("click", function () {
+    if (document.body.style.backgroundColor === white) {
+      document.body.style.backgroundColor = black;
+      theme.setAttribute("src", "images//sun-solid.svg");
+    } else {
+      document.body.style.backgroundColor = white;
+      theme.setAttribute("src", "images//moon-solid.svg");
+    }
+  });
+}
+productPagetheme();
+
 const cardGroup = document.getElementById("content");
 setList("cartList", cartdata);
+setList("userCarts", filex);
 const cartItems = JSON.parse(localStorage.getItem("cartList"));
+let users = JSON.parse(localStorage.getItem("userCarts"));
+console.log(users);
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+let currentMail = currentUser[0]["email"];
+console.log(currentMail);
+
+let findindexmail = users.find(ele => Object.keys(ele)[0] === currentMail);
+console.log(findindexmail);
+console.log(cartItems)
+
+
 
 const total= document.getElementById("cart-num");
 function totalitems(){
@@ -130,20 +162,33 @@ function centerCartBtn(cartAddbtn, cartMinusbtn, addtocartbtn, i) {
   cartAddbtn.style.display = "block";
   cartMinusbtn.style.display = "block";
   let cartObj = {"id": items[i]["id"],  "quantity":1}
+  let currObj = {};
+  console.log(cartItems)
+
   const keyToSearch = 'id';
   const valueToSearch = items[i]["id"];
   const foundObject = cartItems.find(obj => obj[keyToSearch] === valueToSearch);
+  console.log(foundObject)
   const objIndex = cartItems.findIndex(obj => obj[keyToSearch] === valueToSearch);
   if(!foundObject){
     addtocartbtn.textContent = 1;
     cartItems.push(cartObj);
+    updateListItems("cartList",cartItems);
+    currObj[currentMail] = cartItems;
+    users = users.filter(user => !user[currentMail])
+    users.push(currObj)
+    updateListItems("userCarts",users)
+
   }
   else{
   cartItems[objIndex]["quantity"]++;
   addtocartbtn.textContent =cartItems[objIndex]["quantity"] ;
   updateListItems("cartList",cartItems);
+  currObj[currentMail] = cartItems;
+    users.push(currObj);
+    updateListItems("userCarts",users)
   }
-  updateListItems("cartList",cartItems);
+  
   totalitems();
 }
 
@@ -152,9 +197,14 @@ function addCartBtn(addtocartbtn, i) {
   const valueToSearch = items[i]["id"];
   const objIndex = cartItems.findIndex(obj => obj[keyToSearch] === valueToSearch);
   cartItems[objIndex]["quantity"]++;
-
-  addtocartbtn.textContent = cartItems[objIndex]["quantity"];
   updateListItems("cartList",cartItems);
+  addtocartbtn.textContent = cartItems[objIndex]["quantity"];
+  let currObj = {};
+  currObj[currentMail] = cartItems;
+
+    users = users.filter(user => !user[currentMail])
+    users.push(currObj)
+    updateListItems("userCarts",users)
   totalitems();
 
 }
@@ -164,19 +214,32 @@ function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
   const valueToSearch = items[i]["id"];
   const objIndex = cartItems.findIndex(obj => obj[keyToSearch] === valueToSearch);
   let z = --cartItems[objIndex]["quantity"];
-  
-  if(z<=0 ){
+
+  if(z===0 ){
     cartItems[objIndex]["quantity"] = 0;
     addtocartbtn.textContent = "Add to cart";
     cartAddbtn.style.display = "none";
     cartMinusbtn.style.display = "none";
     updateListItems("cartList",cartItems);
+    let currObj = {};
+    currObj[currentMail] = cartItems;
+    users = users.filter(user => !user[currentMail])
+    updateListItems("userCarts",users)
     cartItems.splice(objIndex,1);
     updateListItems("cartList",cartItems);
+    currObj[currentMail] = cartItems;
+    users.push(currObj);
+    updateListItems("userCarts",users)
   }
   else{
     addtocartbtn.textContent = cartItems[objIndex]["quantity"];
     updateListItems("cartList",cartItems);
+
+    let currObj = {};
+    currObj[currentMail] = cartItems;
+    users = users.filter(user => !user[currentMail])
+    users.push(currObj)
+    updateListItems("userCarts",users)
   }
   totalitems();
 }

@@ -120,6 +120,7 @@
   background-color: #107bd4;
   border: 0;
   border-radius: 2%;
+  text-decoration: none;
 }
 .login-container .register {
   text-decoration: none;
@@ -140,6 +141,10 @@
 
 .login-verify {
   display: none;
+}
+
+.register-btn {
+  text-decoration: none;
 }
 
 @media (min-width: 500px) {
