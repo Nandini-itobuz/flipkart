@@ -9,7 +9,16 @@ function updateListItems(key,data) {
 }
 
 const cardGroup = document.getElementById("content");
-const cartItems = JSON.parse(localStorage.getItem("cartList"));
+let users = JSON.parse(localStorage.getItem("userCarts"));
+console.log(users);
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+let currentMail = currentUser[0]["email"];
+const get = localStorage.getItem("userCarts")
+console.log(typeof get);
+const cartItems = get ? JSON.parse( get).find(ele => ele[currentMail])[currentMail]  : []; 
+console.log(cartItems);
+
+
 
 let i=0;
 
@@ -117,6 +126,12 @@ function addCartBtn(addtocartbtn, i) {
   addtocartbtn.textContent = cartItems[objIndex]["quantity"];
   updateListItems("cartList",cartItems);
 
+  let currObj = {};
+  currObj[currentMail] = cartItems;
+
+    users = users.filter(user => !user[currentMail])
+    users.push(currObj)
+    updateListItems("userCarts",users)
 
 }
 
@@ -127,20 +142,31 @@ function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
   const objIndex = cartItems.findIndex(obj => obj[keyToSearch] === valueToSearch);
   let z = --cartItems[objIndex]["quantity"];
   
-  if(z<=0 ){
+  if(z===0 ){
     cartItems[objIndex]["quantity"] = 0;
     addtocartbtn.textContent = "Add to cart";
     cartAddbtn.style.display = "none";
     cartMinusbtn.style.display = "none";
     updateListItems("cartList",cartItems);
+    let currObj = {};
+    currObj[currentMail] = cartItems;
+    users = users.filter(user => !user[currentMail])
+    updateListItems("userCarts",users)
     cartItems.splice(objIndex,1);
     updateListItems("cartList",cartItems);
-    cardGroupItem.style.display = "none";
-    
+    currObj[currentMail] = cartItems;
+    users.push(currObj);
+    updateListItems("userCarts",users)
   }
   else{
     addtocartbtn.textContent = cartItems[objIndex]["quantity"];
     updateListItems("cartList",cartItems);
+
+    let currObj = {};
+    currObj[currentMail] = cartItems;
+    users = users.filter(user => !user[currentMail])
+    users.push(currObj)
+    updateListItems("userCarts",users)
   }
   
 }

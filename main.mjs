@@ -40,14 +40,18 @@ function productPagetheme() {
 }
 productPagetheme();
 
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+let currentMail = currentUser[0]["email"];
 const cardGroup = document.getElementById("content");
 setList("cartList", cartdata);
 setList("userCarts", filex);
-const cartItems = JSON.parse(localStorage.getItem("cartList"));
+const get = localStorage.getItem("userCarts")
+console.log(typeof get);
+const cartItems = get ? JSON.parse( get).find(ele => ele[currentMail])[currentMail]  : []; 
+console.log(cartItems);
 let users = JSON.parse(localStorage.getItem("userCarts"));
 console.log(users);
-let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-let currentMail = currentUser[0]["email"];
+
 console.log(currentMail);
 
 let findindexmail = users.find(ele => Object.keys(ele)[0] === currentMail);
