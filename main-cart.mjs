@@ -1,33 +1,82 @@
-import user from "./data.json" assert { type: 'json' };
-import cartdata from "./cart.json" assert { type: 'json' };
+import user from "./data.json" assert { type: "json" };
 
-const x=JSON.stringify(user);
-const items=JSON.parse(x);
+const x = JSON.stringify(user);
+const items = JSON.parse(x);
+const cardGroup = document.getElementById("content");
+const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+const currentMail = currentUser[0]["email"];
+const get = localStorage.getItem("userCarts");
+const cartItems = get? JSON.parse(get).find((ele) => ele[currentMail])[currentMail] : [];
+let users = JSON.parse(localStorage.getItem("userCarts"));
+let i = 0;
 
-function updateListItems(key,data) {
-    localStorage.setItem(key, JSON.stringify(data));
+function updateListItems(key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
 }
 
-const cardGroup = document.getElementById("content");
-let users = JSON.parse(localStorage.getItem("userCarts"));
-console.log(users);
-let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-let currentMail = currentUser[0]["email"];
-const get = localStorage.getItem("userCarts")
-console.log(typeof get);
-const cartItems = get ? JSON.parse( get).find(ele => ele[currentMail])[currentMail]  : []; 
-console.log(cartItems);
+function addCartBtn(addtocartbtn, i) {
+  const keyToSearch = "id";
+  const valueToSearch = items[i]["id"];
+  const objIndex = cartItems.findIndex(
+    (obj) => obj[keyToSearch] === valueToSearch
+  );
+  cartItems[objIndex]["quantity"]++;
+  addtocartbtn.textContent = cartItems[objIndex]["quantity"];
+  updateListItems("cartList", cartItems);
 
+  let currObj = {};
+  currObj[currentMail] = cartItems;
 
+  users = users.filter((user) => !user[currentMail]);
+  users.push(currObj);
+  updateListItems("userCarts", users);
+}
 
-let i=0;
+function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
+  const keyToSearch = "id";
+  const valueToSearch = items[i]["id"];
+  let cardGroupItem = document.getElementById("cardGroupItem".concat(i));
+  const objIndex = cartItems.findIndex(
+    (obj) => obj[keyToSearch] === valueToSearch
+  );
+  let z = --cartItems[objIndex]["quantity"];
 
-cartItems.forEach(element => {
-  let keyToSearch = 'id';
+  if (z === 0) {
+    cartItems[objIndex]["quantity"] = 0;
+    addtocartbtn.textContent = "Add to cart";
+    cartAddbtn.style.display = "none";
+    cartMinusbtn.style.display = "none";
+    updateListItems("cartList", cartItems);
+    let currObj = {};
+    currObj[currentMail] = cartItems;
+    users = users.filter((user) => !user[currentMail]);
+    updateListItems("userCarts", users);
+    cartItems.splice(objIndex, 1);
+    updateListItems("cartList", cartItems);
+    currObj[currentMail] = cartItems;
+    users.push(currObj);
+    updateListItems("userCarts", users);
+    cardGroupItem.style.display = "none";
+  } else {
+    addtocartbtn.textContent = cartItems[objIndex]["quantity"];
+    updateListItems("cartList", cartItems);
+
+    let currObj = {};
+    currObj[currentMail] = cartItems;
+    users = users.filter((user) => !user[currentMail]);
+    users.push(currObj);
+    updateListItems("userCarts", users);
+  }
+}
+
+cartItems.forEach((element) => {
+  let keyToSearch = "id";
   let valueToSearch = cartItems[i]["id"];
-  const objIndex = cartItems.findIndex(obj => obj[keyToSearch] === valueToSearch);
-  let j= valueToSearch;
-  
+  const objIndex = cartItems.findIndex(
+    (obj) => obj[keyToSearch] === valueToSearch
+  );
+  let j = valueToSearch;
+
   const cardGroupItem = document.createElement("div");
   cardGroup.appendChild(cardGroupItem);
   cardGroupItem.style.cssText = `width: 90%;
@@ -110,81 +159,24 @@ cartItems.forEach(element => {
                                   border-radius:2%;`;
   cardAddButton.setAttribute("class", "cart-addbtn".concat(j));
   let addtocartbtn = document.getElementsByClassName("cart-btn".concat(j));
-  
+
   addtocartbtn[0].textContent = cartItems[objIndex]["quantity"];
   i++;
-    
 });
 
-
-
-function addCartBtn(addtocartbtn, i) {
-  const keyToSearch = 'id';
-  const valueToSearch = items[i]["id"];
-  const objIndex = cartItems.findIndex(obj => obj[keyToSearch] === valueToSearch);
-  cartItems[objIndex]["quantity"]++;
-  addtocartbtn.textContent = cartItems[objIndex]["quantity"];
-  updateListItems("cartList",cartItems);
-
-  let currObj = {};
-  currObj[currentMail] = cartItems;
-
-    users = users.filter(user => !user[currentMail])
-    users.push(currObj)
-    updateListItems("userCarts",users)
-
-}
-
-function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
-  const keyToSearch = 'id';
-  const valueToSearch = items[i]["id"];
-  let cardGroupItem = document.getElementById("cardGroupItem".concat(i));
-  const objIndex = cartItems.findIndex(obj => obj[keyToSearch] === valueToSearch);
-  let z = --cartItems[objIndex]["quantity"];
-  
-  if(z===0 ){
-    cartItems[objIndex]["quantity"] = 0;
-    addtocartbtn.textContent = "Add to cart";
-    cartAddbtn.style.display = "none";
-    cartMinusbtn.style.display = "none";
-    updateListItems("cartList",cartItems);
-    let currObj = {};
-    currObj[currentMail] = cartItems;
-    users = users.filter(user => !user[currentMail])
-    updateListItems("userCarts",users)
-    cartItems.splice(objIndex,1);
-    updateListItems("cartList",cartItems);
-    currObj[currentMail] = cartItems;
-    users.push(currObj);
-    updateListItems("userCarts",users)
-  }
-  else{
-    addtocartbtn.textContent = cartItems[objIndex]["quantity"];
-    updateListItems("cartList",cartItems);
-
-    let currObj = {};
-    currObj[currentMail] = cartItems;
-    users = users.filter(user => !user[currentMail])
-    users.push(currObj)
-    updateListItems("userCarts",users)
-  }
-  
-}
-
 cardGroup.addEventListener("click", function (event) {
-  let i=0;
-  
-  cartItems.forEach(ele =>{
-    let keyToSearch = 'id';
+  let i = 0;
+
+  cartItems.forEach((ele) => {
+    let keyToSearch = "id";
     let valueToSearch = cartItems[i]["id"];
-    let j= valueToSearch;
+    let j = valueToSearch;
 
     let cartMinusbtn = document.getElementsByClassName(
       "cart-minusbtn".concat(j)
     );
     let cartAddbtn = document.getElementsByClassName("cart-addbtn".concat(j));
     let addtocartbtn = document.getElementsByClassName("cart-btn".concat(j));
-    
 
     if (event.target.classList.contains("cart-addbtn".concat(j))) {
       addCartBtn(addtocartbtn[0], j);
@@ -194,5 +186,5 @@ cardGroup.addEventListener("click", function (event) {
       minusCartBtn(addtocartbtn[0], cartAddbtn[0], cartMinusbtn[0], j);
     }
     i++;
-  })
+  });
 });
