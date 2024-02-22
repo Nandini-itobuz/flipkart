@@ -10,7 +10,7 @@ const cartItems = get
   ? JSON.parse(get).find((ele) => ele[currentMail])[currentMail]
   : [];
 let users = JSON.parse(localStorage.getItem("userCarts"));
-const totaltext = document.getElementById('total');
+const totaltext = document.getElementById("total");
 let i = 0;
 let total = 0;
 
@@ -18,25 +18,27 @@ function updateListItems(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-function totalPrice(i){
+function totalPrice(i) {
   const keyToSearch = "id";
   const valueToSearch = items[i]["id"];
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
-  total = total + Number(cartItems[objIndex]["price"]* cartItems[objIndex]['quantity']);
-  totaltext.textContent = 'Your total : '+total;
+  total =
+    total +
+    Number(cartItems[objIndex]["price"] * cartItems[objIndex]["quantity"]);
+  totaltext.textContent = "Your total : " + total;
 }
 
-function totalMinus(i){
+function totalMinus(i) {
   const keyToSearch = "id";
   const valueToSearch = items[i]["id"];
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
   total = total - Number(cartItems[objIndex]["price"]);
-  console.log(total)
-  totaltext.textContent = 'Your total : '+total;
+  console.log(total);
+  totaltext.textContent = "Your total : " + total;
 }
 
 function addCartBtn(addtocartbtn, i) {
@@ -55,7 +57,7 @@ function addCartBtn(addtocartbtn, i) {
   users = users.filter((user) => !user[currentMail]);
   users.push(currObj);
   updateListItems("userCarts", users);
-  totalPrice(i)
+  totalPrice(i);
 }
 
 function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
@@ -66,7 +68,7 @@ function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
     (obj) => obj[keyToSearch] === valueToSearch
   );
   let z = --cartItems[objIndex]["quantity"];
-  totalMinus(i)
+  totalMinus(i);
   if (z === 0) {
     cartItems[objIndex]["quantity"] = 0;
     addtocartbtn.textContent = "Add to cart";
@@ -216,5 +218,3 @@ cardGroup.addEventListener("click", function (event) {
     i++;
   });
 });
-
-
