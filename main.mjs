@@ -1,19 +1,27 @@
 import user from "./data.json" assert { type: "json" };
 import filex from "./filex.json" assert { type: "json" };
 import cartdata from "./cart.json" assert { type: "json" };
+setList("cartList", cartdata);
+setList("userCarts", filex);
+
 
 const x = JSON.stringify(user);
 const items = JSON.parse(x);
 const cardGroup = document.getElementById("content");
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 const currentMail = currentUser[0]["email"];
-const get = localStorage.getItem("userCarts");
-const cartItems = get ? JSON.parse(get).find((ele) => ele[currentMail])[currentMail]: [];
+const get = localStorage.getItem("userCarts")
+const parsedGet = JSON.parse(get)
+if(parsedGet.length === 0) {
+  parsedGet.push({[currentMail]: []})
+}
+const cartItems = get ? parsedGet.find((ele) => ele[currentMail])[currentMail]: [];
+const searchBar = document.getElementById('search-bar');
 let users = JSON.parse(localStorage.getItem("userCarts"));
 let findindexmail = users.find((ele) => Object.keys(ele)[0] === currentMail);
 const total = document.getElementById("cart-num");
-setList("cartList", cartdata);
-setList("userCarts", filex);
+const nav = document.getElementsByClassName('nav')
+
 
 function setList(key, data) {
   if (typeof localStorage !== "undefined") {
@@ -31,7 +39,7 @@ function updateListItems(key, data) {
 
 function productPagetheme() {
   let white = "white";
-  let black = "#3e3e42";
+  let black = "#060608";
   document.body.style.backgroundColor = white;
   let themeDiv = document.getElementsByClassName("theme");
   let theme = document.getElementById("theme-img");
@@ -39,9 +47,12 @@ function productPagetheme() {
   themeDiv[0].addEventListener("click", function () {
     if (document.body.style.backgroundColor === white) {
       document.body.style.backgroundColor = black;
+      nav[0].style.backgroundColor = black;
       theme.setAttribute("src", "images//sun-solid.svg");
     } else {
       document.body.style.backgroundColor = white;
+
+      nav[0].style.backgroundColor = white;
       theme.setAttribute("src", "images//moon-solid.svg");
     }
   });
@@ -60,7 +71,7 @@ function totalitems() {
 function centerCartBtn(cartAddbtn, cartMinusbtn, addtocartbtn, i) {
   cartAddbtn.style.display = "block";
   cartMinusbtn.style.display = "block";
-  let cartObj = { id: items[i]["id"], quantity: 1 };
+  let cartObj = { id: items[i]["id"], quantity: 1, price: items[i]["price"] };
   let currObj = {};
   console.log(cartItems);
 
@@ -255,3 +266,4 @@ cardGroup.addEventListener("click", function (event) {
     }
   }
 });
+

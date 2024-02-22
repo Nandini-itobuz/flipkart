@@ -6,12 +6,37 @@ const cardGroup = document.getElementById("content");
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 const currentMail = currentUser[0]["email"];
 const get = localStorage.getItem("userCarts");
-const cartItems = get? JSON.parse(get).find((ele) => ele[currentMail])[currentMail] : [];
+const cartItems = get
+  ? JSON.parse(get).find((ele) => ele[currentMail])[currentMail]
+  : [];
 let users = JSON.parse(localStorage.getItem("userCarts"));
+const totaltext = document.getElementById('total');
 let i = 0;
+let total = 0;
 
 function updateListItems(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
+}
+
+function totalPrice(i){
+  const keyToSearch = "id";
+  const valueToSearch = items[i]["id"];
+  const objIndex = cartItems.findIndex(
+    (obj) => obj[keyToSearch] === valueToSearch
+  );
+  total = total + Number(cartItems[objIndex]["price"]* cartItems[objIndex]['quantity']);
+  totaltext.textContent = 'Your total : '+total;
+}
+
+function totalMinus(i){
+  const keyToSearch = "id";
+  const valueToSearch = items[i]["id"];
+  const objIndex = cartItems.findIndex(
+    (obj) => obj[keyToSearch] === valueToSearch
+  );
+  total = total - Number(cartItems[objIndex]["price"]);
+  console.log(total)
+  totaltext.textContent = 'Your total : '+total;
 }
 
 function addCartBtn(addtocartbtn, i) {
@@ -30,6 +55,7 @@ function addCartBtn(addtocartbtn, i) {
   users = users.filter((user) => !user[currentMail]);
   users.push(currObj);
   updateListItems("userCarts", users);
+  totalPrice(i)
 }
 
 function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
@@ -40,7 +66,7 @@ function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
     (obj) => obj[keyToSearch] === valueToSearch
   );
   let z = --cartItems[objIndex]["quantity"];
-
+  totalMinus(i)
   if (z === 0) {
     cartItems[objIndex]["quantity"] = 0;
     addtocartbtn.textContent = "Add to cart";
@@ -76,6 +102,8 @@ cartItems.forEach((element) => {
     (obj) => obj[keyToSearch] === valueToSearch
   );
   let j = valueToSearch;
+
+  totalPrice(j);
 
   const cardGroupItem = document.createElement("div");
   cardGroup.appendChild(cardGroupItem);
@@ -114,7 +142,7 @@ cartItems.forEach((element) => {
 
   const cardPrice = document.createElement("h3");
   cardText.appendChild(cardPrice);
-  cardPrice.textContent = "\u20b9".concat(items[i]["price"]);
+  cardPrice.textContent = "\u20b9".concat(items[j]["price"]);
   cardPrice.style.cssText = `font-weight: 600;
                               margin-top :3%;
                               font-family: sans-serif;
@@ -188,3 +216,5 @@ cardGroup.addEventListener("click", function (event) {
     i++;
   });
 });
+
+
