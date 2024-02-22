@@ -15,8 +15,25 @@
       <ul class="nav">
         <li class="nav-logo"><a href="./index.html"><img class="nav-img" src="images/logo.svg" alt="logo"></a></li>
         <li class="theme"><img id="theme-img" src="images/moon-solid.svg" alt="theme"></li>
+        
         <li><a href="./index-cart.html"><button class="cart">Cart<span id="cart-num">0</span></button></a></li>
+          <select id="sortDropdown" class="cart sort price" style="width: 70%;" >
+            <option value="">Sort</option>
+            <optgroup label="Price">
+                <option value="2" >Low to High</option>
+                <option value="1"  >High to Low</option>
+            </optgroup>
+            <optgroup label="Brand">
+              <option value="3" >Apple</option>
+              <option value="4"  >Huawei</option>
+              <option value="5"  >Dell</option>
+              <option value="6"  >Asus</option>
+          </optgroup>
+        </select>
+        
+        </li>
         <li class="nav-inp"><input type="text" id="text-input" placeholder="Search for laptops"> </li>
+        
       </ul>
     </div>
 

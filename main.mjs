@@ -23,7 +23,7 @@ const nav = document.getElementsByClassName("nav");
 const inpText = document.getElementById("text-input");
 let users = JSON.parse(localStorage.getItem("userCarts"));
 let findindexmail = users.find((ele) => Object.keys(ele)[0] === currentMail);
-let arr = [];
+const dropDown = document.getElementById("sortDropdown");
 
 function setList(key, data) {
   if (typeof localStorage !== "undefined") {
@@ -275,9 +275,58 @@ cardGroup.addEventListener("click", function (event) {
 inpText.addEventListener("input", () => {
   let val = inpText.value;
   cardGroup.innerHTML = "";
-  arr = [];
+  let arr = [];
   items.filter((item) => {
     if (item["productName"].toLowerCase().includes(val)) arr.push(item);
   });
   if (arr.length) main(arr);
+});
+
+dropDown.addEventListener("change", function (event) {
+  const selectedOption = event.target.value;
+
+  switch (selectedOption) {
+    case "1":
+      let htolSorted = items.sort((a, b) => Number(b.price) - Number(a.price));
+      cardGroup.innerHTML = "";
+      main(htolSorted);
+      break;
+    case "2":
+      let ltohSorted = items.sort((a, b) => Number(a.price) - Number(b.price));
+      cardGroup.innerHTML = "";
+      main(ltohSorted);
+      break;
+    case "3":
+      cardGroup.innerHTML = "";
+      let arrApple = [];
+      items.filter((item) => {
+        if (item["productName"].toLowerCase().includes("apple")) arrApple.push(item);
+      });
+      main(arrApple);
+      break;
+    case "4":
+      cardGroup.innerHTML = "";
+      let arrHuawei = [];
+      items.filter((item) => {
+        if (item["productName"].toLowerCase().includes("huawei")) arrHuawei.push(item);
+      });
+      main(arrHuawei);
+      break;
+    case "5":
+      cardGroup.innerHTML = "";
+      let arrDell = [];
+      items.filter((item) => {
+        if (item["productName"].toLowerCase().includes("dell")) arrDell.push(item);
+      });
+      main(arrDell);
+      break;
+    case "6":
+      cardGroup.innerHTML = "";
+      let arrAsus = [];
+      items.filter((item) => {
+        if (item["productName"].toLowerCase().includes("asus")) arrAsus.push(item);
+      });
+      main(arrAsus);
+      break;
+  }
 });

@@ -49,7 +49,7 @@
 .nav .nav-logo {
   width: 25%;
   margin-right: 40px;
-  grid-column: 1/10;
+  grid-column: 1/9;
 }
 .nav .nav-inp {
   grid-column: 1/13;
@@ -230,7 +230,7 @@
 
 @media (min-width: 500px) {
   .nav .nav-logo {
-    grid-column: 1/7;
+    grid-column: 1/6;
   }
   .nav .nav-inp {
     grid-column: 9/13;
