@@ -27,7 +27,7 @@ loginBtn[0].addEventListener('click', () =>{
     console.log(passwordValue);
     
 
-    let findUser = userDetails.find(ele => ele.email == emailValue );
+    let findUser = userDetails.find(ele => ele.email === emailValue );
     if(findUser.email === emailValue ){
         let currentObj = {"email": emailValue}
         currentman.push(currentObj);
