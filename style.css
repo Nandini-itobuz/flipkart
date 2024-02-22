@@ -226,7 +226,7 @@
     width: 50%;
   }
   #content {
-    margin-top: 8%;
+    margin-top: 5%;
     grid-template-columns: repeat(3, 1fr);
   }
 }

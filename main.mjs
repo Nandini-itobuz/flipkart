@@ -4,24 +4,24 @@ import cartdata from "./cart.json" assert { type: "json" };
 setList("cartList", cartdata);
 setList("userCarts", filex);
 
-
 const x = JSON.stringify(user);
 const items = JSON.parse(x);
 const cardGroup = document.getElementById("content");
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 const currentMail = currentUser[0]["email"];
-const get = localStorage.getItem("userCarts")
-const parsedGet = JSON.parse(get)
-if(parsedGet.length === 0) {
-  parsedGet.push({[currentMail]: []})
+const get = localStorage.getItem("userCarts");
+const parsedGet = JSON.parse(get);
+if (parsedGet.length === 0) {
+  parsedGet.push({ [currentMail]: [] });
 }
-const cartItems = get ? parsedGet.find((ele) => ele[currentMail])[currentMail]: [];
-const searchBar = document.getElementById('search-bar');
+const cartItems = get
+  ? parsedGet.find((ele) => ele[currentMail])[currentMail]
+  : [];
+const searchBar = document.getElementById("search-bar");
 let users = JSON.parse(localStorage.getItem("userCarts"));
 let findindexmail = users.find((ele) => Object.keys(ele)[0] === currentMail);
 const total = document.getElementById("cart-num");
-const nav = document.getElementsByClassName('nav')
-
+const nav = document.getElementsByClassName("nav");
 
 function setList(key, data) {
   if (typeof localStorage !== "undefined") {
@@ -266,4 +266,3 @@ cardGroup.addEventListener("click", function (event) {
     }
   }
 });
-

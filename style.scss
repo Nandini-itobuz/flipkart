@@ -43,7 +43,7 @@
   padding: 5%;
   align-items: center;
   position: fixed;
-  top:0;
+  top: 0;
   width: 100%;
   background-color: white;
   .nav-logo {
@@ -212,7 +212,8 @@
 
 @media (min-width: 500px) {
   .carousel-container {
-    margin-top: 12%;}
+    margin-top: 12%;
+  }
   #content {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -223,9 +224,9 @@
 }
 @media (min-width: 768px) {
   .carousel-container {
-    margin-top: 7%;}
+    margin-top: 7%;
+  }
 
-    
   .nav {
     padding: 2% 4% 2% 4%;
   }
@@ -235,7 +236,7 @@
   }
 
   #content {
-    margin-top: 8%;
+    margin-top: 5%;
     grid-template-columns: repeat(3, 1fr);
   }
 }
