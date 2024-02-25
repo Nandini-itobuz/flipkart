@@ -17,7 +17,7 @@ if (parsedGet.length === 0) {
 const cartItems = get
   ? parsedGet.find((ele) => ele[currentMail])[currentMail]
   : [];
-  
+
 const total = document.getElementById("cart-num");
 const nav = document.getElementsByClassName("nav");
 const inpText = document.getElementById("text-input");
@@ -26,8 +26,6 @@ let users = JSON.parse(localStorage.getItem("userCarts"));
 let themeDiv = document.getElementsByClassName("theme");
 let theme = document.getElementById("theme-img");
 let dataTheme = localStorage.getItem("data-theme");
-let white = "#ffffff";
-let black = "#060608";
 
 function setList(key, data) {
   if (typeof localStorage !== "undefined") {
@@ -53,22 +51,100 @@ function totalitems() {
   }
 }
 
-function centerCartBtn(cartAddbtn, cartMinusbtn, addtocartbtn, i) {
-  cartAddbtn.style.display = "block";
-  cartMinusbtn.style.display = "block";
-  let cartObj = { id: items[i]?.id, quantity: 1, price: items[i]["price"] };
+function main(items) {
+  cardGroup.innerHTML = "";
+  for (let i = 0; i < items.length; i++) {
+    const keyToSearch = "id";
+    const valueToSearch = items[i]["id"];
+    const objIndex = cartItems.findIndex(
+      (obj) => obj[keyToSearch] === valueToSearch
+    );
+
+    console.log(objIndex);
+
+    const x = items[i]["id"];
+    const cardGroupItem = document.createElement("div");
+    cardGroup.appendChild(cardGroupItem);
+    cardGroupItem.classList.add("itemContainer");
+    cardGroupItem.setAttribute("id", items[i]["id"]);
+
+    const cardImg = document.createElement("img");
+    cardImg.setAttribute("src", items[i]["image"]);
+    cardGroupItem.appendChild(cardImg);
+    cardImg.classList.add("itemContainerImg");
+
+    const cardText = document.createElement("div");
+    cardGroupItem.appendChild(cardText);
+
+    const cardName = document.createElement("h2");
+    cardText.appendChild(cardName);
+    cardName.textContent = items[i]["productName"];
+    cardName.classList.add("itemContainerName");
+
+    const cardDetails = document.createElement("p");
+    cardText.appendChild(cardDetails);
+    cardDetails.textContent = items[i]["description"];
+    cardDetails.classList.add("itemContainerDetails");
+
+    const cardPrice = document.createElement("h3");
+    cardText.appendChild(cardPrice);
+    cardPrice.textContent = "\u20b9".concat(items[i]["price"]);
+    cardPrice.classList.add("itemContainerPrice");
+
+    const cardDiv = document.createElement("div");
+    cardText.appendChild(cardDiv);
+    cardDiv.classList.add("itemContainerBtn");
+    cardDiv.classList.add("cards");
+
+    const cardMinusButton = document.createElement("button");
+    cardDiv.appendChild(cardMinusButton);
+    cardMinusButton.textContent = "-";
+    cardMinusButton.setAttribute("class", "cart-minusbtn".concat(i));
+    cardMinusButton.classList.add("itemContainerMinus");
+    cardMinusButton.setAttribute("data-minus-btn", items[i]["id"]);
+    cardMinusButton.onclick = function () {
+      decrement(items[i]["id"]);
+    };
+    if (objIndex === -1) cardMinusButton.style.display = "none";
+    else cardMinusButton.style.display = "block";
+    const cardButton = document.createElement("button");
+    cardDiv.appendChild(cardButton);
+
+    if (objIndex === -1) cardButton.textContent = "Add to cart";
+    else cardButton.textContent = cartItems[objIndex]["quantity"];
+    cardButton.classList.add("itemContainerBtns");
+    cardButton.onclick = function () {
+      added(items[i]["id"], cardMinusButton, cardAddButton, cardButton);
+    };
+
+    const cardAddButton = document.createElement("button");
+    cardDiv.appendChild(cardAddButton);
+    cardAddButton.textContent = "+";
+    cardAddButton.classList.add("itemContainerAdd");
+    if (objIndex === -1) cardAddButton.style.display = "none";
+    else cardAddButton.style.display = "block";
+    cardAddButton.onclick = function () {
+      increment(items[i]["id"]);
+    };
+  }
+}
+
+function added(idBtn) {
+  let cartObj = {
+    id: items[idBtn]["id"],
+    quantity: 1,
+    price: items[idBtn]["price"],
+  };
   let currObj = {};
-
   const keyToSearch = "id";
-  const valueToSearch = items[i]["id"];
-  const foundObject = cartItems.find((obj) => obj[keyToSearch] === valueToSearch);
-
+  const valueToSearch = items[idBtn]["id"];
+  const foundObject = cartItems.find(
+    (obj) => obj[keyToSearch] === valueToSearch
+  );
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
-
   if (!foundObject) {
-    addtocartbtn.textContent = 1;
     cartItems.push(cartObj);
     updateListItems("cartList", cartItems);
     currObj[currentMail] = cartItems;
@@ -77,123 +153,56 @@ function centerCartBtn(cartAddbtn, cartMinusbtn, addtocartbtn, i) {
     updateListItems("userCarts", users);
   } else {
     cartItems[objIndex]["quantity"]++;
-    addtocartbtn.textContent = cartItems[objIndex]["quantity"];
     updateListItems("cartList", cartItems);
     currObj[currentMail] = cartItems;
     users.push(currObj);
     updateListItems("userCarts", users);
   }
-
   totalitems();
+  main(items);
 }
 
-function addCartBtn(addtocartbtn, i) {
+function decrement(idBtn) {
   const keyToSearch = "id";
-  const valueToSearch = items[i]["id"];
-  const objIndex = cartItems.findIndex(
-    (obj) => obj[keyToSearch] === valueToSearch
-  );
-  cartItems[objIndex]["quantity"]++;
-  updateListItems("cartList", cartItems);
-  addtocartbtn.textContent = cartItems[objIndex]["quantity"];
-  let currObj = {};
-  currObj[currentMail] = cartItems;
-
-  users = users.filter((user) => !user[currentMail]);
-  users.push(currObj);
-  updateListItems("userCarts", users);
-  totalitems();
-}
-
-function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
-  const keyToSearch = "id";
-  const valueToSearch = items[i]["id"];
+  const valueToSearch = items[idBtn]["id"];
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
   let z = --cartItems[objIndex]["quantity"];
-
+  updateListItems("cartList", cartItems);
+  let currObj = {};
+  currObj[currentMail] = cartItems;
+  users = users.filter((user) => !user[currentMail]);
   if (z === 0) {
-    cartItems[objIndex]["quantity"] = 0;
-    addtocartbtn.textContent = "Add to cart";
-    cartAddbtn.style.display = "none";
-    cartMinusbtn.style.display = "none";
-    updateListItems("cartList", cartItems);
-    let currObj = {};
-    currObj[currentMail] = cartItems;
-    users = users.filter((user) => !user[currentMail]);
-    updateListItems("userCarts", users);
+    // updateListItems("userCarts", users);
     cartItems.splice(objIndex, 1);
     updateListItems("cartList", cartItems);
     currObj[currentMail] = cartItems;
     users.push(currObj);
     updateListItems("userCarts", users);
   } else {
-    addtocartbtn.textContent = cartItems[objIndex]["quantity"];
-    updateListItems("cartList", cartItems);
-
-    let currObj = {};
-    currObj[currentMail] = cartItems;
-    users = users.filter((user) => !user[currentMail]);
     users.push(currObj);
     updateListItems("userCarts", users);
   }
   totalitems();
+  main(items);
 }
 
-function main(items) {
-  for (let i = 0; i < items.length; i++) {
-    const cardGroupItem = document.createElement("div");
-    cardGroup.appendChild(cardGroupItem);
-    cardGroupItem.classList.add('itemContainer')
-    cardGroupItem.setAttribute("id", "cardGroupItem".concat(i));
-
-    const cardImg = document.createElement("img");
-    cardImg.setAttribute("src", items[i]["image"]);
-    cardGroupItem.appendChild(cardImg);
-    cardImg.classList.add('itemContainerImg')
-
-    const cardText = document.createElement("div");
-    cardGroupItem.appendChild(cardText);
-
-    const cardName = document.createElement("h2");
-    cardText.appendChild(cardName);
-    cardName.textContent = items[i]["productName"];
-    cardName.classList.add('itemContainerName')
-
-    const cardDetails = document.createElement("p");
-    cardText.appendChild(cardDetails);
-    cardDetails.textContent = items[i]["description"];
-    cardDetails.classList.add('itemContainerDetails')
-
-    const cardPrice = document.createElement("h3");
-    cardText.appendChild(cardPrice);
-    cardPrice.textContent = "\u20b9".concat(items[i]["price"]);
-    cardPrice.classList.add("itemContainerPrice")
-
-    const cardDiv = document.createElement("div");
-    cardText.appendChild(cardDiv);
-    cardDiv.classList.add("itemContainerBtn")
-
-    const cardMinusButton = document.createElement("button");
-    cardDiv.appendChild(cardMinusButton);
-    cardMinusButton.textContent = "-";
-    cardMinusButton.setAttribute("class", "cart-minusbtn".concat(i));
-    cardMinusButton.classList.add("itemContainerMinus")
-    
-
-    const cardButton = document.createElement("button");
-    cardDiv.appendChild(cardButton);
-    cardButton.textContent = "Add to Cart";
-    cardButton.setAttribute("class", "cart-btn".concat(i));
-    cardButton.classList.add('itemContainerBtns');
-
-    const cardAddButton = document.createElement("button");
-    cardDiv.appendChild(cardAddButton);
-    cardAddButton.textContent = "+";
-    cardAddButton.setAttribute("class", "cart-addbtn".concat(i));
-    cardAddButton.classList.add('itemContainerAdd')
-  }
+function increment(idBtn) {
+  const keyToSearch = "id";
+  const valueToSearch = items[idBtn]["id"];
+  const objIndex = cartItems.findIndex(
+    (obj) => obj[keyToSearch] === valueToSearch
+  );
+  cartItems[objIndex]["quantity"]++;
+  updateListItems("cartList", cartItems);
+  let currObj = {};
+  currObj[currentMail] = cartItems;
+  users = users.filter((user) => !user[currentMail]);
+  users.push(currObj);
+  updateListItems("userCarts", users);
+  totalitems();
+  main(items);
 }
 
 function themeProuductPage() {
@@ -210,33 +219,8 @@ function themeProuductPage() {
   }
 }
 
-themeProuductPage();
-totalitems();
-main(items);
-
-cardGroup.addEventListener("click", function (event) {
-  for (let i = 0; i < 8; i++) {
-    let cartMinusbtn = document.getElementsByClassName("cart-minusbtn".concat(i));
-    let cartAddbtn = document.getElementsByClassName("cart-addbtn".concat(i));
-    let addtocartbtn = document.getElementsByClassName("cart-btn".concat(i));
-
-    if (event.target.classList.contains("cart-btn".concat(i))) {
-      centerCartBtn(cartAddbtn[0], cartMinusbtn[0], addtocartbtn[0], i);
-    }
-
-    if (event.target.classList.contains("cart-addbtn".concat(i))) {
-      addCartBtn(addtocartbtn[0], i);
-    }
-
-    if (event.target.classList.contains("cart-minusbtn".concat(i))) {
-      minusCartBtn(addtocartbtn[0], cartAddbtn[0], cartMinusbtn[0], i);
-    }
-  }
-});
-
 inpText.addEventListener("input", () => {
   let val = inpText.value;
-  cardGroup.innerHTML = "";
   let arr = [];
   items.filter((item) => {
     if (item["productName"].toLowerCase().includes(val)) arr.push(item);
@@ -250,16 +234,13 @@ dropDown.addEventListener("change", function (event) {
   switch (selectedOption) {
     case "1":
       let htolSorted = items.sort((a, b) => Number(b.price) - Number(a.price));
-      cardGroup.innerHTML = "";
       main(htolSorted);
       break;
     case "2":
       let ltohSorted = items.sort((a, b) => Number(a.price) - Number(b.price));
-      cardGroup.innerHTML = "";
       main(ltohSorted);
       break;
     case "3":
-      cardGroup.innerHTML = "";
       let arrApple = [];
       items.filter((item) => {
         if (item["productName"].toLowerCase().includes("apple"))
@@ -268,7 +249,6 @@ dropDown.addEventListener("change", function (event) {
       main(arrApple);
       break;
     case "4":
-      cardGroup.innerHTML = "";
       let arrHuawei = [];
       items.filter((item) => {
         if (item["productName"].toLowerCase().includes("huawei"))
@@ -277,7 +257,6 @@ dropDown.addEventListener("change", function (event) {
       main(arrHuawei);
       break;
     case "5":
-      cardGroup.innerHTML = "";
       let arrDell = [];
       items.filter((item) => {
         if (item["productName"].toLowerCase().includes("dell"))
@@ -286,7 +265,6 @@ dropDown.addEventListener("change", function (event) {
       main(arrDell);
       break;
     case "6":
-      cardGroup.innerHTML = "";
       let arrAsus = [];
       items.filter((item) => {
         if (item["productName"].toLowerCase().includes("asus"))
@@ -301,14 +279,17 @@ themeDiv[0].addEventListener("click", function () {
   let dataTheme = localStorage.getItem("data-theme");
   if (dataTheme === "0") {
     localStorage.setItem("data-theme", "1");
-    console.log("ok");
     document.body.style.backgroundColor = "#060608";
     nav[0].style.backgroundColor = "#060608";
     theme.setAttribute("src", "images//sun-solid.svg");
   } else {
     localStorage.setItem("data-theme", "0");
-    document.body.style.backgroundColor = white;
-    nav[0].style.backgroundColor = white;
+    document.body.style.backgroundColor = "#ffffff";
+    nav[0].style.backgroundColor = "#ffffff";
     theme.setAttribute("src", "images//moon-solid.svg");
   }
 });
+
+themeProuductPage();
+totalitems();
+main(items);

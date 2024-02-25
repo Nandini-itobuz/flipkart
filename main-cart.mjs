@@ -109,16 +109,13 @@ cartItems.forEach((element) => {
 
   const cardGroupItem = document.createElement("div");
   cardGroup.appendChild(cardGroupItem);
-  cardGroupItem.style.cssText = `width: 90%;
-                                      background-color :#107BD4;
-                                      text-align:center;
-                                      margin-bottom:10%`;
+  cardGroupItem.classList.add("itemContainer")
   cardGroupItem.setAttribute("id", "cardGroupItem".concat(j));
 
   const cardImg = document.createElement("img");
   cardImg.setAttribute("src", items[j]["image"]);
   cardGroupItem.appendChild(cardImg);
-  cardImg.style.cssText = `width: 100%; margin-bottom:5%`;
+  cardImg.classList.add('itemContainerImg');
 
   const cardText = document.createElement("div");
   cardGroupItem.appendChild(cardText);
@@ -126,70 +123,42 @@ cartItems.forEach((element) => {
   const cardName = document.createElement("h2");
   cardText.appendChild(cardName);
   cardName.textContent = items[j]["productName"];
-  cardName.style.cssText = `font-size:1.2rem;
-                              font-family: sans-serif;
-                              font-weight:600;
-                              padding: 0% 5%;
-                              color:white`;
+  cardName.classList.add('itemContainerName')
 
   const cardDetails = document.createElement("p");
   cardText.appendChild(cardDetails);
   cardDetails.textContent = items[j]["description"];
-  cardDetails.style.cssText = `margin-top :2%;
-                                  // text-align:start;
-                                  font-family: sans-serif;
-                                  font-size:0.8rem;
-                                  padding: 0% 10%;
-                                  color:white;`;
+  cardDetails.classList.add("itemContainerDetails");
 
   const cardPrice = document.createElement("h3");
   cardText.appendChild(cardPrice);
   cardPrice.textContent = "\u20b9".concat(items[j]["price"]);
-  cardPrice.style.cssText = `font-weight: 600;
-                              margin-top :3%;
-                              font-family: sans-serif;
-                              color:white;`;
+  cardPrice.classList.add('itemContainerPrice');
 
   const cardDiv = document.createElement("div");
   cardText.appendChild(cardDiv);
-  cardDiv.style.cssText = `display:flex;justify-content:center `;
+  cardDiv.classList.add('itemContainerBtn')
 
   const cardMinusButton = document.createElement("button");
   cardDiv.appendChild(cardMinusButton);
   cardMinusButton.textContent = "-";
-  cardMinusButton.style.cssText = `margin:3% 1%;
-                                  padding:3%;
-                                  font-weight:600;
-                                  border:1px solid white;
-                                  color:#107BD4;
-                                  display:block;
-                                  border-radius:2%;`;
   cardMinusButton.setAttribute("class", "cart-minusbtn".concat(j));
+  cardMinusButton.classList.add('itemContainerMinus')
+  cardMinusButton.style.display ="block"
 
   const cardButton = document.createElement("button");
   cardDiv.appendChild(cardButton);
   cardButton.textContent = "Add to Cart";
-  cardButton.style.cssText = `margin:3%;
-                                  padding:3%;
-                                  font-weight:600;
-                                  border:1px solid white;
-                                  color:#107BD4;
-                                  border-radius:2%;`;
   cardButton.setAttribute("class", "cart-btn".concat(j));
+  cardButton.classList.add('itemContainerBtns')
 
   const cardAddButton = document.createElement("button");
   cardDiv.appendChild(cardAddButton);
   cardAddButton.textContent = "+";
-  cardAddButton.style.cssText = `margin:3% 1%;
-                                  padding:3%;
-                                  font-weight:600;
-                                  border:1px solid white;
-                                  color:#107BD4;
-                                  display:block;
-                                  border-radius:2%;`;
   cardAddButton.setAttribute("class", "cart-addbtn".concat(j));
+  cardAddButton.classList.add('itemContainerAdd');
+  cardAddButton.style.display =  "block"
   let addtocartbtn = document.getElementsByClassName("cart-btn".concat(j));
-
   addtocartbtn[0].textContent = cartItems[objIndex]["quantity"];
   i++;
 });
