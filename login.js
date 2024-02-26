@@ -12,7 +12,7 @@ function setList(key, data) {
       localStorage.setItem(key, JSON.stringify(data));
     }
   } else {
-    console.error("localStorage is not available in this environment.");
+    alert("localStorage is not available in this environment.");
   }
 }
 
