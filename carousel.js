@@ -6,7 +6,6 @@ const carousalArray = ['images/girl.jpg', 'images/laptop.jpg', 'images/shop.jpg'
 let currIndex = 0;
 
 function createCarousal(link) {
-  console.log(link)
   const carouselItemDiv = document.createElement('div');
   carouselItemDiv.classList.add('carousel-item');
   const carouselImg = document.createElement('img');
