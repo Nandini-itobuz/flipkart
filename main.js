@@ -4,24 +4,25 @@ import cartdata from "./cart.json" assert { type: "json" };
 setList("cartList", cartdata);
 setList("userCarts", filex);
 
-const x = JSON.stringify(user);
-const items = JSON.parse(x);
+const stringUser = JSON.stringify(user);
+const items = JSON.parse(stringUser);
 const cardGroup = document.getElementById("content");
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-const currentMail = currentUser[0]["email"];
+let currentMail = currentUser[0]["email"];
 const get = localStorage.getItem("userCarts");
 const parsedGet = JSON.parse(get);
 if (parsedGet.length === 0) {
   parsedGet.push({ [currentMail]: [] });
 }
-const cartItems = get
-  ? parsedGet.find((ele) => ele[currentMail])[currentMail]
-  : [];
-
 const total = document.getElementById("cart-num");
 const nav = document.getElementsByClassName("nav");
 const inpText = document.getElementById("text-input");
-const dropDown = document.getElementById("sortDropdown");
+const dropDown = document.getElementById("sort-dropdown");
+let cartItems = get
+  ? parsedGet.find((ele) => ele[currentMail])[currentMail]
+  : [];
+
+updateListItems("cartList", cartItems);
 let users = JSON.parse(localStorage.getItem("userCarts"));
 let themeDiv = document.getElementsByClassName("theme");
 let theme = document.getElementById("theme-img");
@@ -60,9 +61,6 @@ function main(items) {
       (obj) => obj[keyToSearch] === valueToSearch
     );
 
-    console.log(objIndex);
-
-    const x = items[i]["id"];
     const cardGroupItem = document.createElement("div");
     cardGroup.appendChild(cardGroupItem);
     cardGroupItem.classList.add("itemContainer");
@@ -168,13 +166,12 @@ function decrement(idBtn) {
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
-  let z = --cartItems[objIndex]["quantity"];
+  let removeValue = --cartItems[objIndex]["quantity"];
   updateListItems("cartList", cartItems);
   let currObj = {};
   currObj[currentMail] = cartItems;
   users = users.filter((user) => !user[currentMail]);
-  if (z === 0) {
-    // updateListItems("userCarts", users);
+  if (removeValue === 0) {
     cartItems.splice(objIndex, 1);
     updateListItems("cartList", cartItems);
     currObj[currentMail] = cartItems;

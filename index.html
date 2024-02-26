@@ -11,46 +11,45 @@
 <body id="body">
 
   <section>
-    <div>
+    <div class="nav-div">
       <ul class="nav">
         <li class="nav-logo"><a href="./index.html"><img class="nav-img" src="images/logo.svg" alt="logo"></a></li>
         <li class="theme"><img id="theme-img" src="images/moon-solid.svg" alt="theme"></li>
         
         <li><a href="./index-cart.html"><button class="cart">Cart<span id="cart-num">0</span></button></a></li>
-        <li>  <select id="sortDropdown" class="cart sort price"  >
-            <option value="">Sort By</option>
-            <optgroup label="Price">
-                <option value="2" >Low to High</option>
-                <option value="1"  >High to Low</option>
-            </optgroup>
-            <optgroup label="Brand">
-              <option value="3" >Apple</option>
-              <option value="4"  >Huawei</option>
-              <option value="5"  >Dell</option>
-              <option value="6"  >Asus</option>
+        <li class="sort-items">  <select id="sort-dropdown" class="cart sort price"  >
+          <option value="">Sort By</option>
+          <optgroup label="Price">
+              <option value="2" >Low to High</option>
+              <option value="1"  >High to Low</option>
           </optgroup>
-        </select>
-        
-        </li>
+          <optgroup label="Brand">
+            <option value="3" >Apple</option>
+            <option value="4"  >Huawei</option>
+            <option value="5"  >Dell</option>
+            <option value="6"  >Asus</option>
+        </optgroup>
+      </select>
+      </li>
         <li class="nav-inp"><input type="text" id="text-input" placeholder="Search for laptops"> </li>
-        
-      </ul>
+       
+    </ul>
     </div>
 
     <div class="carousel-container">
     </div>
     <div class="carousal-btn">
-      <button class="prev-btn"><img src="./images/caret-left-solid.svg" class="btn"></button>
+      <button class="prev-btn"><img src="images/left-arrow.svg" class="btn"></button>
       <div class="carousel-active"></div>
       <div class="carousel-active"></div>
       <div class="carousel-active"></div>
-      <button class="next-btn"><img src="./images/caret-right-solid.svg" class="btn"></button>
+      <button class="next-btn"><img src="images/right-arrow.svg" class="btn"></button>
     </div>
 
     <div id="content"></div>
   </section>
 
-  <script src="./main-2.js" type="module"></script>
+  <script src="./main.js" type="module"></script>
   <script src="./carousel.js"></script>
 </body>
 

@@ -67,9 +67,9 @@ function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
-  let z = --cartItems[objIndex]["quantity"];
+  let removeValue = --cartItems[objIndex]["quantity"];
   totalMinus(i);
-  if (z === 0) {
+  if (removeValue === 0) {
     cartItems[objIndex]["quantity"] = 0;
     addtocartbtn.textContent = "Add to cart";
     cartAddbtn.style.display = "none";
