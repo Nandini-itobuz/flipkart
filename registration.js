@@ -41,7 +41,7 @@ function sendOtp() {
       getotpbtn[0].style.display = "none";
       console.log(email[3].value);
       otpBtn[0].addEventListener("click", () => {
-        if (email[4].value == otpValue) {
+        if (email[4].value === otpValue) {
           alert("Email Address Verified");
           if (message === "OK") {
             getotpbtn[2].style.display = "block";

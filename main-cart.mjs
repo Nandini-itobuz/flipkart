@@ -1,7 +1,7 @@
 import user from "./data.json" assert { type: "json" };
 
-const x = JSON.stringify(user);
-const items = JSON.parse(x);
+const stringUser = JSON.stringify(user);
+const items = JSON.parse(stringUser);
 const cardGroup = document.getElementById("content");
 const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 const currentMail = currentUser[0]["email"];
@@ -11,7 +11,7 @@ const cartItems = get
   : [];
 let users = JSON.parse(localStorage.getItem("userCarts"));
 const totaltext = document.getElementById("total");
-let i = 0;
+let idSearch=0;
 let total = 0;
 
 function updateListItems(key, data) {
@@ -30,9 +30,9 @@ function totalPrice(i) {
   totaltext.textContent = "Your total : " + total;
 }
 
-function totalMinus(i) {
+function totalMinus(idSearch) {
   const keyToSearch = "id";
-  const valueToSearch = items[i]["id"];
+  const valueToSearch = items[idSearch]["id"];
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
@@ -41,9 +41,9 @@ function totalMinus(i) {
   totaltext.textContent = "Your total : " + total;
 }
 
-function addCartBtn(addtocartbtn, i) {
+function addCartBtn(addtocartbtn, idSearch) {
   const keyToSearch = "id";
-  const valueToSearch = items[i]["id"];
+  const valueToSearch = items[idSearch]["id"];
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
@@ -57,18 +57,18 @@ function addCartBtn(addtocartbtn, i) {
   users = users.filter((user) => !user[currentMail]);
   users.push(currObj);
   updateListItems("userCarts", users);
-  totalPrice(i);
+  totalPrice(idSearch);
 }
 
-function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
+function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, idSearch) {
   const keyToSearch = "id";
-  const valueToSearch = items[i]["id"];
-  let cardGroupItem = document.getElementById("cardGroupItem".concat(i));
+  const valueToSearch = items[idSearch]["id"];
+  let cardGroupItem = document.getElementById("cardGroupItem".concat(idSearch));
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
   let removeValue = --cartItems[objIndex]["quantity"];
-  totalMinus(i);
+  totalMinus(idSearch);
   if (removeValue === 0) {
     cartItems[objIndex]["quantity"] = 0;
     addtocartbtn.textContent = "Add to cart";
@@ -99,7 +99,7 @@ function minusCartBtn(addtocartbtn, cartAddbtn, cartMinusbtn, i) {
 
 cartItems.forEach((element) => {
   let keyToSearch = "id";
-  let valueToSearch = cartItems[i]["id"];
+  let valueToSearch = cartItems[idSearch]["id"];
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
@@ -160,30 +160,30 @@ cartItems.forEach((element) => {
   cardAddButton.style.display =  "block"
   let addtocartbtn = document.getElementsByClassName("cart-btn".concat(j));
   addtocartbtn[0].textContent = cartItems[objIndex]["quantity"];
-  i++;
+  idSearch++;
 });
 
 cardGroup.addEventListener("click", function (event) {
-  let i = 0;
+  let indexs = 0;
 
   cartItems.forEach((ele) => {
     let keyToSearch = "id";
-    let valueToSearch = cartItems[i]["id"];
-    let j = valueToSearch;
+    let valueToSearch = cartItems[indexs]["id"];
+    let searchId = valueToSearch;
 
     let cartMinusbtn = document.getElementsByClassName(
-      "cart-minusbtn".concat(j)
+      "cart-minusbtn".concat(searchId)
     );
-    let cartAddbtn = document.getElementsByClassName("cart-addbtn".concat(j));
-    let addtocartbtn = document.getElementsByClassName("cart-btn".concat(j));
+    let cartAddbtn = document.getElementsByClassName("cart-addbtn".concat(searchId));
+    let addtocartbtn = document.getElementsByClassName("cart-btn".concat(searchId));
 
-    if (event.target.classList.contains("cart-addbtn".concat(j))) {
-      addCartBtn(addtocartbtn[0], j);
+    if (event.target.classList.contains("cart-addbtn".concat(searchId))) {
+      addCartBtn(addtocartbtn[0], searchId);
     }
 
-    if (event.target.classList.contains("cart-minusbtn".concat(j))) {
-      minusCartBtn(addtocartbtn[0], cartAddbtn[0], cartMinusbtn[0], j);
+    if (event.target.classList.contains("cart-minusbtn".concat(searchId))) {
+      minusCartBtn(addtocartbtn[0], cartAddbtn[0], cartMinusbtn[0], searchId);
     }
-    i++;
+    indexs++;
   });
 });
