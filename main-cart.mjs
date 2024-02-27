@@ -11,22 +11,20 @@ const cartItems = get
   : [];
 let users = JSON.parse(localStorage.getItem("userCarts"));
 const totaltext = document.getElementById("total");
-let idSearch=0;
+let idSearch = 0;
 let total = 0;
 
 function updateListItems(key, data) {
   localStorage.setItem(key, JSON.stringify(data));
 }
 
-function totalPrice(i) {
+function totalPrice(idSearch) {
   const keyToSearch = "id";
-  const valueToSearch = items[i]["id"];
+  const valueToSearch = items[idSearch]["id"];
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
-  total =
-    total +
-    Number(cartItems[objIndex]["price"] * cartItems[objIndex]["quantity"]);
+  total = total + Number(cartItems[objIndex]["price"] * cartItems[objIndex]["quantity"]);
   totaltext.textContent = "Your total : " + total;
 }
 
@@ -103,17 +101,17 @@ cartItems.forEach((element) => {
   const objIndex = cartItems.findIndex(
     (obj) => obj[keyToSearch] === valueToSearch
   );
-  let j = valueToSearch;
+  let searchValue = valueToSearch;
 
-  totalPrice(j);
+  totalPrice(searchValue);
 
   const cardGroupItem = document.createElement("div");
   cardGroup.appendChild(cardGroupItem);
   cardGroupItem.classList.add("itemContainer")
-  cardGroupItem.setAttribute("id", "cardGroupItem".concat(j));
+  cardGroupItem.setAttribute("id", "cardGroupItem".concat(searchValue));
 
   const cardImg = document.createElement("img");
-  cardImg.setAttribute("src", items[j]["image"]);
+  cardImg.setAttribute("src", items[searchValue]["image"]);
   cardGroupItem.appendChild(cardImg);
   cardImg.classList.add('itemContainerImg');
 
@@ -122,17 +120,17 @@ cartItems.forEach((element) => {
 
   const cardName = document.createElement("h2");
   cardText.appendChild(cardName);
-  cardName.textContent = items[j]["productName"];
+  cardName.textContent = items[searchValue]["productName"];
   cardName.classList.add('itemContainerName')
 
   const cardDetails = document.createElement("p");
   cardText.appendChild(cardDetails);
-  cardDetails.textContent = items[j]["description"];
+  cardDetails.textContent = items[searchValue]["description"];
   cardDetails.classList.add("itemContainerDetails");
 
   const cardPrice = document.createElement("h3");
   cardText.appendChild(cardPrice);
-  cardPrice.textContent = "\u20b9".concat(items[j]["price"]);
+  cardPrice.textContent = "\u20b9".concat(items[searchValue]["price"]);
   cardPrice.classList.add('itemContainerPrice');
 
   const cardDiv = document.createElement("div");
@@ -142,23 +140,23 @@ cartItems.forEach((element) => {
   const cardMinusButton = document.createElement("button");
   cardDiv.appendChild(cardMinusButton);
   cardMinusButton.textContent = "-";
-  cardMinusButton.setAttribute("class", "cart-minusbtn".concat(j));
+  cardMinusButton.setAttribute("class", "cart-minusbtn".concat(searchValue));
   cardMinusButton.classList.add('itemContainerMinus')
-  cardMinusButton.style.display ="block"
+  cardMinusButton.style.display = "block"
 
   const cardButton = document.createElement("button");
   cardDiv.appendChild(cardButton);
   cardButton.textContent = "Add to Cart";
-  cardButton.setAttribute("class", "cart-btn".concat(j));
+  cardButton.setAttribute("class", "cart-btn".concat(searchValue));
   cardButton.classList.add('itemContainerBtns')
 
   const cardAddButton = document.createElement("button");
   cardDiv.appendChild(cardAddButton);
   cardAddButton.textContent = "+";
-  cardAddButton.setAttribute("class", "cart-addbtn".concat(j));
+  cardAddButton.setAttribute("class", "cart-addbtn".concat(searchValue));
   cardAddButton.classList.add('itemContainerAdd');
-  cardAddButton.style.display =  "block"
-  let addtocartbtn = document.getElementsByClassName("cart-btn".concat(j));
+  cardAddButton.style.display = "block"
+  let addtocartbtn = document.getElementsByClassName("cart-btn".concat(searchValue));
   addtocartbtn[0].textContent = cartItems[objIndex]["quantity"];
   idSearch++;
 });
